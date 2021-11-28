@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
 
-require('./database/databse')
+require('./database/database')
 require('./user')
 
 http.createServer(app).listen(PORT,()=>{
