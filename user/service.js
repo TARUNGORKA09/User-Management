@@ -8,6 +8,7 @@ exports.getPassword = getPassword;
 exports.checkDuplicateEmail = checkDuplicateEmail;
 exports.saveOTP = saveOTP;
 exports.sendEmail = sendEmail;
+exports.getOtp = getOtp
 
 async function addUser(opts){
   let table_name = constant.USER.ADD_USER_TABLE;
@@ -72,4 +73,13 @@ async function sendEmail(email,OTP){
       }
   });
   })
+}
+
+async function getOtp(opts){
+  let table_name = constant.USER.USER_OTP;
+  let sqlQuery = `SELECT * FROM ${table_name} WHERE email = ?`;
+  let params = [];
+  params.push(opts.email)
+  let queryResult = await database.executeQuery(sqlQuery,params);
+  return queryResult.otp;
 }

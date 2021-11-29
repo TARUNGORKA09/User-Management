@@ -3,4 +3,5 @@ const validator  = require('./validator')
 
 app.post("/user/addUser",validator.addUser,controller.addUser);
 app.post("/user/login",validator.login,controller.login);
-app.post("/user/sendOtp",validator.sendOtp,controller.sendOTP)
+app.post("/user/sendOtp",validator.sendOtp,controller.sendOTP);
+app.post("/user/verifyOtp",validator.verifyOtp,controller.verifyOtp);

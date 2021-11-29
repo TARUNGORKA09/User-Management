@@ -5,6 +5,7 @@ const _ = require('underscore')
 exports.addUser = addUser;
 exports.login = login;
 exports.sendOTP = sendOTP;
+exports.verifyOtp = verifyOtp;
 
 async function addUser(req,res){
     const body = req.body;
@@ -81,4 +82,32 @@ async function sendOTP(req,res){
   }catch(err){
     res.send({ERROR : err.message})
   }
+}
+
+async function verifyOtp(res,req){
+    const body = req.body;
+    try{
+        let otp = body.otp;
+        let email = body.email;
+
+        let obj = {
+            otp,
+            email
+        }
+
+        let db_password = await services.getOtp(obj)
+        if(_.isEmpty(hashed_password)){
+            throw new Error("Oops!!Something went wrong!")
+        }
+        let hashed_password = crypto.createHash('md5').update(otp).digest('hex');
+        if(hashed_password == db_password){
+            return {
+                message : "successful",
+                status : 200
+            }
+        }
+    }catch(err){
+        console.log("Error : ",err)
+        res.send({Error : err.message})
+    }
 }

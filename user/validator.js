@@ -3,6 +3,7 @@ const joi = require('joi')
 exports.addUser = addUser;
 exports.login = login;
 exports.sendOtp = sendOtp;
+exports.verifyOtp = verifyOtp;
 
 function addUser(req,res,next){
     console.log(`ADD USER REQUEST RECEIVED`)
@@ -19,7 +20,7 @@ function addUser(req,res,next){
         }
         return next()
     }catch(err){
-        console.error(`******* ${err} *******`)
+        console.error(`******* ${err.message} *******`)
         res.send({ERROR : err, MSG : "Validation Error"})
     }
 }
@@ -37,7 +38,7 @@ function login(req,res,next){
         }
         return next()
     }catch(err){
-        console.log(`********** ${err} ***********`);
+        console.log(`********** ${err.message} ***********`);
         res.send({ERROR : err , MSG : "something went wrong"})
     }
 }
@@ -54,7 +55,25 @@ function sendOtp(req,res,next){
         }
         return next()
     }catch(err){
-        console.log(`********** ${err} ***********`);
+        console.log(`********** ${err.message} ***********`);
+        res.send({ERROR : err , MSG : "something went wrong"})
+    }
+}
+
+function verifyOtp(req,res,next){
+    console.log("VERIFY OTP REQUEST RECEIVED")
+    try{
+        const schema = joi.object().keys({
+            otp : joi.any().required(),
+            email : joi.any().required()
+        })
+        let validation = schema.validate(req.body);
+        if(validation.error){
+            throw new Error("OTP validation error")
+        }
+        return next()
+    }catch(err){
+        console.log(`********** ${err.message} ***********`);
         res.send({ERROR : err , MSG : "something went wrong"})
     }
 }
